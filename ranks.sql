@@ -1,6 +1,6 @@
-##每周日刷一次前100名，存到ranks表
+﻿##每周日刷一次上周，存到ranks表
 INSERT INTO ranks(rankid,uid,nickname,distance,score,total_score,guai,weeks)
-SELECT @a:=IFNULL(@a,0)+1 AS rankid,  n.uid,a.nickname,n.oneDistance,n.oneSocre,n.oneAllsocre,n.oneGuai,WEEK(CURDATE()-1)
+SELECT @a:=IFNULL(@a,0)+1 AS rankid,  n.uid,a.nickname,n.oneDistance,n.oneSocre,n.oneAllsocre,n.oneGuai,WEEK(CURDATE())-1
 FROM
 (
 SELECT MAX(id) AS id,p.uid,p.oneAllsocre
@@ -15,18 +15,20 @@ GROUP BY p.uid,p.oneAllsocre
 JOIN `accountusers` a ON s.uid = a.uid
 JOIN `one_game_log` n ON n.id = s.id
 ORDER BY n.oneAllsocre DESC
-LIMIT 0,100;
+##LIMIT 0,100;
 
 ##取上周ranks表排名
 SELECT rankid,uid,nickname,distance,score,total_score,guai
 FROM ranks 
-WHERE weeks = IF(DAYOFWEEK(CURDATE())=1,WEEK(CURDATE())-1,WEEK(CURDATE())) - 1;
+WHERE weeks = IF(DAYOFWEEK(CURDATE())=1,WEEK(CURDATE())-1,WEEK(CURDATE())) - 1
+order by rankid
+limit 0,100;
 
 ##取某人上周排名
 ##设入参i_uid为所取用户标志
 SELECT rankid
 FROM ranks 
-WHERE weeks = IF(DAYOFWEEK(CURDATE())=1,WEEK(CURDATE())-1,WEEK(CURDATE())) AND uid = i_uid;
+WHERE weeks = IF(DAYOFWEEK(CURDATE())=1,WEEK(CURDATE())-2,WEEK(CURDATE())-1) AND uid = i_uid;
 
 
 ##取实时排行榜
