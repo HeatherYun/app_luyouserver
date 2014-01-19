@@ -7,7 +7,7 @@ SELECT MAX(id) AS id,p.uid,p.oneAllsocre
 FROM
 (SELECT uid,MAX(oneAllsocre) AS oneAllsocre
 FROM `one_game_log`
-WHERE  posttime BETWEEN SUBDATE(CURDATE(),6) AND NOW() AND modelType = 2
+WHERE  posttime BETWEEN SUBDATE(CURDATE(),6) AND NOW() 
 GROUP BY uid) p
 JOIN `one_game_log` l ON l.uid=p.uid AND l.oneAllsocre= p.oneAllsocre
 GROUP BY p.uid,p.oneAllsocre
@@ -39,7 +39,7 @@ SELECT MAX(id) AS id,p.uid,p.oneAllsocre
 FROM
 (SELECT uid,MAX(oneAllsocre) AS oneAllsocre
 FROM `one_game_log`
-WHERE  posttime BETWEEN SUBDATE(CURDATE(),IF(DAYOFWEEK(CURDATE())=1,6,DATE_FORMAT(CURDATE(),'%w')-1)) AND NOW() AND modelType = 2
+WHERE  posttime BETWEEN SUBDATE(CURDATE(),IF(DAYOFWEEK(CURDATE())=1,6,DATE_FORMAT(CURDATE(),'%w')-1)) AND NOW()
 GROUP BY uid) p
 JOIN `one_game_log` l ON l.uid=p.uid AND l.oneAllsocre= p.oneAllsocre
 GROUP BY p.uid,p.oneAllsocre
