@@ -49,6 +49,15 @@ FROM `accountusers`
 WHERE `registertime`>=CURDATE()
 GROUP BY channel;
 
+
+INSERT INTO `stat_users`(channel,register_amount,postdate,posttime)
+SELECT channel,COUNT(1) AS register_amount,CURDATE() AS postdate,CURTIME() AS posttime
+FROM `accountusers` 
+WHERE `registertime` >=CURDATE()
+GROUP BY channel
+UNION 
+SELECT 0,0,CURDATE(),CURTIME()
+
 ##################################
 ##查询单日各渠道注册人数
 ##设入参i_postdate是查询曲线日期
@@ -65,12 +74,17 @@ SELECT channel,register_amount,posttime
 FROM `stat_users`
 WHERE postdate=i_postdate 
 ORDER BY channel,posttime;
+##查询每日渠道总计
+SELECT channel,SUM(register_amount) AS register_amount
+FROM `stat_users`
+WHERE postdate=i_postdate
+GROUP BY channel;
 
 ##################################
 ##查询单日注册总人数
 ##设入参i_postdate是查询曲线日期
 ##################################
-SELECT SUM(register_amount),posttime
+SELECT SUM(register_amount) AS register_amount,posttime
 FROM `stat_users`
 WHERE postdate=i_postdate
 GROUP BY posttime
