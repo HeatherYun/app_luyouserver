@@ -56,7 +56,9 @@ WHERE uid=i_uid
 ##UID为主键，如果该用户本周最高积分已经存在，则直接替换，
 ##所以必须程序先判断修改后的积分是最高积分
 REPLACE INTO cur_week_score(uid,nickname,distance,score,total_score,guai) 
-VALUES( 1,'22',11,11,11,11)
+SELECT uid,nickname,4226,43437,85697,29
+FROM accountusers 
+WHERE uid=1903
 
 ##定时器每周清理上周积分(周一0点执行)
 TRUNCATE TABLE cur_week_score;
